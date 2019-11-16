@@ -1,14 +1,10 @@
 package data
 
-import (
-	"github.com/jansemmelink/log"
-)
-
 //var log = logger.ForThisPackage()
 
 //Debug ...
 func Debug() {
-	log.DebugOn()
+	//log.DebugOn()
 	// logger.Top().WithWriter(file.NewFileWriter(os.Stderr))
 	// e, _ := console.NewEncoder(console.Config{
 	// 	Sep:  " ",
