@@ -1,0 +1,8 @@
+github.com/go-msvc/assert v0.0.0-20221211181107-6279216babaa h1:bSiOyCzLmNlRRLauATfFb+5+AZRIH555vIAMN59cz94=
+github.com/go-msvc/assert v0.0.0-20221211181107-6279216babaa/go.mod h1:tGWjW6DPqod7XHZyNLXF5WG9BKvVP+pVycuNiIX0CY8=
+github.com/go-msvc/errors v1.2.0 h1:fTZypG1qs7lDtYfGYKDey62lMCT5ClsyxeMysrxNo0g=
+github.com/go-msvc/errors v1.2.0/go.mod h1:dbMiCuWpUiARCkC19IDEpcGIx11VYWq1+vGfF0NAenA=
+github.com/go-msvc/logger v0.0.0-20210121062433-1f3922644bec h1:Xrt+itPOlP+NsaQseWM00Fk0juNtqJZqCRZX8g6JV+w=
+github.com/go-msvc/logger v0.0.0-20210121062433-1f3922644bec/go.mod h1:2wVoA8rQtGPatj+5uHahKFExXJqcRHpq4an2UHuYidc=
+github.com/go-msvc/logger v1.0.0 h1:OELJmIpXSRLnbmy4UMc1IWQiQBH5ODZDjeofc540Lzg=
+github.com/go-msvc/logger v1.0.0/go.mod h1:qHIjKcyl03uKxD2SrJa6UqSfp0RuOiuOSyb8i1NLhKw=
