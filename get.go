@@ -55,13 +55,16 @@ func GetInto(data interface{}, name string, tmplValue interface{}) (interface{},
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot marshal to JSON")
 	}
+	return JsonInto(jsonNamedValue, tmplValue)
+}
 
+func JsonInto(jsonValue []byte, tmplValue interface{}) (interface{}, error) {
 	//make new copy of defaultValue
 	outPtrValue := reflect.New(reflect.TypeOf(tmplValue))
 	outPtrValue.Elem().Set(reflect.ValueOf(tmplValue))
 
 	//unmarshal over the tmplValue to merge
-	if err := json.Unmarshal(jsonNamedValue, outPtrValue.Interface()); err != nil {
+	if err := json.Unmarshal(jsonValue, outPtrValue.Interface()); err != nil {
 		return nil, errors.Wrapf(err, "cannot unmarshal named JSON value")
 	}
 
@@ -94,11 +97,22 @@ func get(value reflect.Value, nameParts []string) (interface{}, error) {
 	//simple scalar types
 	case reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint,
 		reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int,
-		reflect.String, reflect.Bool, reflect.Interface:
+		reflect.String, reflect.Bool:
 		if len(nameParts) > 0 {
 			return nil, errors.Errorf("cannot get(%+v) from %v", nameParts, value.Kind())
 		}
 		return value.Interface(), nil
+	case reflect.Interface:
+		if len(nameParts) == 0 {
+			return value.Interface(), nil
+		}
+		if obj, ok := value.Interface().(map[string]interface{}); ok {
+			return get(reflect.ValueOf(obj), nameParts)
+		}
+		if arr, ok := value.Interface().([]interface{}); ok {
+			return get(reflect.ValueOf(arr), nameParts)
+		}
+		return nil, errors.Errorf("cannot get(%+v) from %v", nameParts, value.Kind())
 	case reflect.Struct:
 		return getFromStruct(value, nameParts)
 	case reflect.Map:
