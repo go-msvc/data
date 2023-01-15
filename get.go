@@ -10,7 +10,7 @@ import (
 	"github.com/go-msvc/logger"
 )
 
-var log = logger.New().WithLevel(logger.LevelDebug)
+var log = logger.New().WithLevel(logger.LevelError)
 
 // Get() and all its variants split names on [] for slices and . for maps
 // so you cannot use it with a map containing this:
@@ -31,7 +31,7 @@ var log = logger.New().WithLevel(logger.LevelDebug)
 func Get(data interface{}, name string) (interface{}, error) {
 	v, err := get(reflect.ValueOf(data), nameParts(name))
 	if err != nil {
-		log.Errorf("get(%s) failed: %+v", name, err)
+		log.Debugf("get(%s) failed: %+v", name, err)
 	} else {
 		log.Debugf("get(%s) -> (%T)%+v", name, v, v)
 	}
