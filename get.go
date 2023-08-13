@@ -92,7 +92,19 @@ func GetOr(data interface{}, name string, defaultValue interface{}) interface{} 
 // }
 
 func get(value reflect.Value, nameParts []string) (interface{}, error) {
-	log.Debugf("get(%v, name=%s)", value.Type(), strings.Join(nameParts, "|"))
+	log.Debugf("get((%v)(%T)%+v, name=%s)", value.Type(), value.Interface(), value.Interface(), strings.Join(nameParts, "|"))
+
+	if value.Kind() == reflect.Interface {
+		//convert like this to establich the true type
+		//e.g. map[string]SomeCustomType will end up here looking like nothing
+		//but after this, we can see it's a map... not sure why...
+		tmpValue := value.Interface()
+		tmpType := reflect.TypeOf(tmpValue)
+		log.Debugf("(%T)%+v = type(%v) = kind(%v)", tmpValue, tmpValue, tmpType, tmpType.Kind())
+
+		value = reflect.ValueOf(tmpValue)
+	}
+
 	switch value.Kind() {
 	//simple scalar types
 	case reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint,
@@ -112,7 +124,7 @@ func get(value reflect.Value, nameParts []string) (interface{}, error) {
 		if arr, ok := value.Interface().([]interface{}); ok {
 			return get(reflect.ValueOf(arr), nameParts)
 		}
-		return nil, errors.Errorf("cannot get(%+v) from %v", nameParts, value.Kind())
+		return nil, errors.Errorf("cannot get(%+v) from %T", nameParts, value.Interface())
 	case reflect.Struct:
 		return getFromStruct(value, nameParts)
 	case reflect.Map:
